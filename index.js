@@ -4,7 +4,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-  res.send('🚀 My Node App is Running (CI/CD Ready for nodejs apppppp printo new new sibin)');
+  res.send('🚀 My Node App is Running (CI/CD Ready for nodejs )');
 });
 
 app.listen(PORT, () => {
