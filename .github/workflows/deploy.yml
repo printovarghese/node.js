@@ -8,13 +8,14 @@ on:
 env:
   ACR_NAME: sibinappacrdevnew
   WEBAPP_NAME: sibin-webapp-devnew
-  IMAGE_NAME: my-node-app
+  IMAGE_NAME: my-node-appnew
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
+    # 📥 Checkout code
     - name: Checkout code
       uses: actions/checkout@v3
 
@@ -26,7 +27,7 @@ jobs:
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
 
-    # 🐳 Build Docker image
+    # 🐳 Build Docker Image
     - name: Build Docker Image
       run: |
         docker build \
@@ -34,19 +35,19 @@ jobs:
           -t ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:latest \
           .
 
-    # 📦 Push images
+    # 📦 Push Docker Images to ACR
     - name: Push Docker Images
       run: |
         docker push ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ github.sha }}
         docker push ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:latest
 
-    # 🔑 Azure Login
+    # 🔑 Login to Azure
     - name: Azure Login
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    # 🚀 Deploy to Web App
+    # 🚀 Deploy to Azure Web App (Container)
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
